@@ -39,7 +39,7 @@ const ApplicationForm = () => {
     addressDetails: z.object({
       streetAddress: z.string().min(5, { message: "Street address is required" }),
       city: z.string().min(5, { message: "City is required" }),
-      zipCode: z.string().min(5, { message: "Zip code must be min 5 characters long" }).max(5, { message: "Zip code must be max 5 characters long" })
+      zipCode: z.coerce.number().min(10000, { message: "Zip code must be at least 5 digits" }).max(99999, { message: "Zip code must be at most 5 digits" })
     }),
     accountInformation: z.object({
       username: z.string().min(4, { message: "Username is required" }),
@@ -199,7 +199,7 @@ const ApplicationForm = () => {
                   <div className="col-span-12 md:col-span-6">
                     <Label>Zip Code</Label>
                     <Input 
-                      {...register("addressDetails.zipCode")}
+                      {...register("addressDetails.zipCode", { valueAsNumber: true })}
                     />
                     {errors.addressDetails?.zipCode && (
                       <p className="text-red-500 text-sm mt-1">{errors.addressDetails.zipCode.message}</p>
